@@ -1,0 +1,36 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.schedule-slot {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons:first-child {
+    margin-bottom: 20px;
+}
+
+img:first-child {
+    margin-bottom: 15px;
+}
+
+.buttons a {
+    text-decoration: none;
+    display: block;
+}

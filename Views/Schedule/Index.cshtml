@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Schedule.ViewModels.ScheduleViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="table-responsize">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                @foreach (var day in ViewBag.Days)
+                {
+                    <th>
+                        @day
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                int day = 1;
+                <tr>
+                    <td>
+                        <center>
+                        <h4>@item.TimeSlot.ClassNumber</h4>
+                            @item.TimeSlot.StartTime.ToString(@"hh\:mm") - @item.TimeSlot.EndTime.ToString(@"hh\:mm")
+                        </center>
+                    </td>
+                    @foreach (var schedule in item.Schedules)
+                    {
+                        @while ((int) schedule.DayOfWeek != day)
+                        {
+                            day++;
+                            <td>
+                            </td>
+                        }
+                        <td>
+                            <div class="schedule-slot">
+                                <div class="schedule-text">
+                                    @schedule.Subject.Name
+                                    <br />
+                                    <i>@schedule.ClassType</i>
+                                    <br />
+                                </div>
+                                <div class="buttons">
+                                    <a asp-action="Edit" asp-route-id="@schedule.Id">
+                                        <img src="img/editing.png" alt="edit" width="20"/>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@schedule.Id">
+                                        <img src="img/delete.png" alt="delete" width="20"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                        day++;
+                    }
+                    @while (day != 6)
+                    {
+                        day++;
+                        <td>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
