@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Schedule.Data;
-using Schedule.Models;
+using CampusFlow.Data;
+using CampusFlow.Models;
 
-namespace Schedule.Controllers
+namespace CampusFlow.Controllers
 {
     public class TimeSlotController : Controller
     {
-        private readonly ScheduleContext _context;
+        private readonly CampusContext _context;
 
-        public TimeSlotController(ScheduleContext context)
+        public TimeSlotController(CampusContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace Schedule.Controllers
         {
             //return _context.TimeSlot != null ? 
             //            View(await _context.TimeSlot.ToListAsync()) :
-            //            Problem("Entity set 'ScheduleContext.TimeSlot'  is null.");
+            //            Problem("Entity set 'CampusContext.TimeSlot'  is null.");
 
             var ts = await _context.TimeSlot
                 .Include(x => x.Schedules)
@@ -148,7 +148,7 @@ namespace Schedule.Controllers
         {
             if (_context.TimeSlot == null)
             {
-                return Problem("Entity set 'ScheduleContext.TimeSlot'  is null.");
+                return Problem("Entity set 'CampusContextContext.TimeSlot'  is null.");
             }
             var timeSlot = await _context.TimeSlot.FindAsync(id);
             if (timeSlot != null)

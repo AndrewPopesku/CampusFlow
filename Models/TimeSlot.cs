@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Schedule.Models
+namespace CampusFlow.Models
 {
     public class TimeSlot
     {

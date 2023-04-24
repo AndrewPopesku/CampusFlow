@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Schedule.Migrations
+namespace CampusFlow.Migrations
 {
     /// <inheritdoc />
     public partial class DeletedFieldSchedule : Migration

@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Schedule.Models;
+using CampusFlow.Models;
 
-namespace Schedule.Data
+namespace CampusFlow.Data
 {
-    public class ScheduleContext : DbContext
+    public class CampusContext : DbContext
     {
-        public ScheduleContext(DbContextOptions<ScheduleContext> options) : base(options)
+        public CampusContext(DbContextOptions<CampusContext> options) : base(options)
         {
         }
 
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<StudentSchedule> Schedules { get; set; }
-        public DbSet<Schedule.Models.TimeSlot>? TimeSlot { get; set; }
+        public DbSet<CampusFlow.Models.TimeSlot>? TimeSlot { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

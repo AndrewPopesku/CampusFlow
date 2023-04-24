@@ -1,11 +1,11 @@
+using CampusFlow.Data;
 using Microsoft.EntityFrameworkCore;
-using Schedule.Data;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ScheduleContext>(options =>
+builder.Services.AddDbContext<CampusContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
 
 builder.Services.AddControllersWithViews();

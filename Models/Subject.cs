@@ -1,4 +1,4 @@
-﻿namespace Schedule.Models
+﻿namespace CampusFlow.Models
 {
     public class Subject
     {

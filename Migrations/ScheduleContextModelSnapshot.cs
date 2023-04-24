@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Schedule.Data;
+using CampusFlow.Data;
 
 #nullable disable
 
-namespace Schedule.Migrations
+namespace CampusFlow.Migrations
 {
-    [DbContext(typeof(ScheduleContext))]
+    [DbContext(typeof(CampusContext))]
     partial class ScheduleContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

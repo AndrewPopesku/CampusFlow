@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Schedule.Data;
-using Schedule.Models;
+using CampusFlow.Data;
+using CampusFlow.Models;
 
-namespace Schedule.Controllers
+namespace CampusFlow.Controllers
 {
     public class SubjectController : Controller
     {
-        private readonly ScheduleContext _context;
+        private readonly CampusContext _context;
 
-        public SubjectController(ScheduleContext context)
+        public SubjectController(CampusContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace Schedule.Controllers
         {
               return _context.Subjects != null ? 
                           View(await _context.Subjects.ToListAsync()) :
-                          Problem("Entity set 'ScheduleContext.Subjects'  is null.");
+                          Problem("Entity set 'CampusContext.Subjects'  is null.");
         }
 
         // GET: Subject/Details/5
@@ -58,7 +58,7 @@ namespace Schedule.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Subject subject)
         {
-            ModelState.Remove("Schedules");
+            ModelState.Remove("CampusFlows");
             if (ModelState.IsValid)
             {
                 _context.Add(subject);
@@ -96,7 +96,7 @@ namespace Schedule.Controllers
                 return NotFound();
             }
 
-            ModelState.Remove("Schedules");
+            ModelState.Remove("CampusFlows");
             if (ModelState.IsValid)
             {
                 try
@@ -145,7 +145,7 @@ namespace Schedule.Controllers
         {
             if (_context.Subjects == null)
             {
-                return Problem("Entity set 'ScheduleContext.Subjects'  is null.");
+                return Problem("Entity set 'CampusContext.Subjects'  is null.");
             }
             var subject = await _context.Subjects.FindAsync(id);
             if (subject != null)

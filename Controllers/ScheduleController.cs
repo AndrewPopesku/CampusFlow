@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Schedule.Data;
-using Schedule.Models;
-using Schedule.ViewModels;
+using CampusFlow.Data;
+using CampusFlow.Models;
+using CampusFlow.ViewModels;
 
-namespace Schedule.Controllers
+namespace CampusFlow.Controllers
 {
     public class ScheduleController : Controller
     {
-        private readonly ScheduleContext _context;
+        private readonly CampusContext _context;
 
-        public ScheduleController(ScheduleContext context)
+        public ScheduleController(CampusContext context)
         {
             _context = context;
         }

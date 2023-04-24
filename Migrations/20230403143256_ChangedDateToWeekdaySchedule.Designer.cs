@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Schedule.Data;
+using CampusFlow.Data;
 
 #nullable disable
 
-namespace Schedule.Migrations
+namespace CampusFlow.Migrations
 {
-    [DbContext(typeof(ScheduleContext))]
+    [DbContext(typeof(CampusContext))]
     [Migration("20230403143256_ChangedDateToWeekdaySchedule")]
     partial class ChangedDateToWeekdaySchedule
     {

@@ -1,6 +1,6 @@
-﻿using Schedule.Models;
+﻿using CampusFlow.Models;
 
-namespace Schedule.ViewModels
+namespace CampusFlow.ViewModels
 {
     public class ScheduleViewModel
     {
