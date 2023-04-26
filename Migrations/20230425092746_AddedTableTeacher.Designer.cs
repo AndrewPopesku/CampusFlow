@@ -4,6 +4,7 @@ using CampusFlow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusFlow.Migrations
 {
     [DbContext(typeof(CampusContext))]
-    partial class ScheduleContextModelSnapshot : ModelSnapshot
+    [Migration("20230425092746_AddedTableTeacher")]
+    partial class AddedTableTeacher
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,24 +24,6 @@ namespace CampusFlow.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CampusFlow.Models.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Groups");
-                });
 
             modelBuilder.Entity("CampusFlow.Models.StudentSchedule", b =>
                 {
@@ -54,27 +39,16 @@ namespace CampusFlow.Migrations
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsOddWeek")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TimeSlotId")
+                    b.Property<int?>("TimeSlotId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.HasIndex("SubjectId");
 
@@ -154,12 +128,6 @@ namespace CampusFlow.Migrations
 
             modelBuilder.Entity("CampusFlow.Models.StudentSchedule", b =>
                 {
-                    b.HasOne("CampusFlow.Models.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CampusFlow.Models.Subject", "Subject")
                         .WithMany("Schedules")
                         .HasForeignKey("SubjectId")
@@ -174,11 +142,7 @@ namespace CampusFlow.Migrations
 
                     b.HasOne("CampusFlow.Models.TimeSlot", "TimeSlot")
                         .WithMany("Schedules")
-                        .HasForeignKey("TimeSlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
+                        .HasForeignKey("TimeSlotId");
 
                     b.Navigation("Subject");
 

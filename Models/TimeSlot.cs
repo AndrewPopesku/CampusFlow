@@ -6,7 +6,6 @@ namespace CampusFlow.Models
     {
         public int TimeSlotId { get; set; }
         public int ClassNumber { get; set; }
-        [DisplayFormat(DataFormatString = "hh:mm")]
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 

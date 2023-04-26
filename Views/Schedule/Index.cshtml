@@ -6,9 +6,36 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="controls">
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+
+    <form asp-action="Index" method="get" class="d-inline-flex">
+        <div class="form-group">
+            Week:
+            <select type="text" name="isOddWeek" class="form-control">
+                @if(ViewBag.IsOddWeek)
+                {
+                    <option id="odd" value="true" selected>Odd</option>
+                    <option id="even" value="false">Even</option>
+                }
+                else
+                {
+                    <option id="odd" value="true">Odd</option>
+                    <option id="even" value="false" selected>Even</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            Group:
+            <select type="text" name="groupSelected" class="form-control" asp-items="ViewBag.Group"></select>
+        </div>
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </form>
+</div>
+
 <div class="table-responsize">
     <table class="table table-bordered">
         <thead>
@@ -48,6 +75,9 @@
                                     <br />
                                     <i>@schedule.ClassType</i>
                                     <br />
+                                    @schedule.Teacher.FullName
+                                    <br />
+                                    @schedule.Location
                                 </div>
                                 <div class="buttons">
                                     <a asp-action="Edit" asp-route-id="@schedule.Id">
@@ -72,3 +102,4 @@
         </tbody>
     </table>
 </div>
+

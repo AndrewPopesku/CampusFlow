@@ -12,6 +12,8 @@ namespace CampusFlow.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<StudentSchedule> Schedules { get; set; }
         public DbSet<CampusFlow.Models.TimeSlot>? TimeSlot { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

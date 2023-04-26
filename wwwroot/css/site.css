@@ -34,3 +34,13 @@ img:first-child {
     text-decoration: none;
     display: block;
 }
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+}
+
+.controls .form-group {
+    margin: 0 40px;
+}

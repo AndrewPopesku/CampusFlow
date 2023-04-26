@@ -17,12 +17,19 @@ namespace CampusFlow.Controllers
         }
 
         // GET: Schedule
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string isOddWeek = "true", int groupSelected = 6)
         {
             ViewData["Days"] = ScheduleViewModel.Days;
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
+            ViewData["IsOddWeek"] = isOddWeek == "true";
+
             var schedules = _context.Schedules
+                .Where(s => s.GroupId == groupSelected)
+                .Where(s => s.IsOddWeek.ToString().Equals(isOddWeek))
+                .Include(s => s.Teacher)
                 .Include(s => s.Subject)
                 .OrderBy(s => s.DayOfWeek);
+
             var timeslots = await _context.TimeSlot.ToListAsync();
             var viewModelList = new List<ScheduleViewModel>();
 
@@ -43,6 +50,8 @@ namespace CampusFlow.Controllers
             }
 
             var studentSchedule = await _context.Schedules
+                .Include(s => s.Group)
+                .Include(s => s.Teacher)
                 .Include(s => s.Subject)
                 .Include(s => s.TimeSlot)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -58,7 +67,9 @@ namespace CampusFlow.Controllers
         public async Task<IActionResult> Create()
         {
             ViewData["Days"] = new SelectList(ScheduleViewModel.Days);
+            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName");
             ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name");
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name");
             ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber");
             return View(); 
         }
@@ -68,10 +79,12 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DayOfWeek,ClassType,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
+        public async Task<IActionResult> Create([Bind("Id,DayOfWeek,ClassType,IsOddWeek,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
         {
             ModelState.Remove("Subject");
             ModelState.Remove("TimeSlot");
+            ModelState.Remove("Teacher");
+            ModelState.Remove("Group");
             var schedules = _context.Schedules;
             if (schedules.Any(s => s.TimeSlotId == studentSchedule.TimeSlotId && s.DayOfWeek == studentSchedule.DayOfWeek))
             {
@@ -85,7 +98,9 @@ namespace CampusFlow.Controllers
             }
 
             ViewData["Days"] = new SelectList(ScheduleViewModel.Days, studentSchedule.DayOfWeek);
+            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
             ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", studentSchedule.GroupId);
             ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", studentSchedule.TimeSlotId);
             return View(studentSchedule);
         }
@@ -105,6 +120,8 @@ namespace CampusFlow.Controllers
             }
             ViewData["Days"] = new SelectList(ScheduleViewModel.Days);
             ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
+            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", studentSchedule.GroupId);
             ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", studentSchedule.TimeSlotId);
             return View(studentSchedule);
         }
@@ -114,7 +131,7 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DayOfWeek,ClassType,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DayOfWeek,ClassType,IsOddWeek,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
         {
             if (id != studentSchedule.Id)
             {
@@ -123,6 +140,8 @@ namespace CampusFlow.Controllers
 
             ModelState.Remove("Subject");
             ModelState.Remove("TimeSlot");
+            ModelState.Remove("Teacher");
+            ModelState.Remove("Group");
             if (ModelState.IsValid)
             {
                 try
@@ -145,6 +164,8 @@ namespace CampusFlow.Controllers
             }
             ViewData["Days"] = new SelectList(ScheduleViewModel.Days, studentSchedule.DayOfWeek);
             ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
+            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", studentSchedule.GroupId);
             ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", studentSchedule.TimeSlotId);
             return View(studentSchedule);
         }
@@ -158,6 +179,8 @@ namespace CampusFlow.Controllers
             }
 
             var studentSchedule = await _context.Schedules
+                .Include(s => s.Group)
+                .Include(s => s.Teacher)
                 .Include(s => s.Subject)
                 .Include(s => s.TimeSlot)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -190,7 +213,7 @@ namespace CampusFlow.Controllers
 
         private bool StudentScheduleExists(int id)
         {
-          return (_context.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

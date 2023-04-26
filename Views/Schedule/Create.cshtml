@@ -30,6 +30,25 @@
                 <select asp-for="TimeSlotId" class="form-control" asp-items="ViewBag.TimeSlot"></select>
             </div>
             <div class="form-group">
+                <label asp-for="IsOddWeek" class="control-label">Class Num</label>
+                <select asp-for="IsOddWeek" class="form-control">
+                    <option value="1">Odd</option>
+                    <option value="0">Even</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TeacherId" class="control-label">Teacher</label>
+                <select asp-for="TeacherId" class="form-control" asp-items="ViewBag.Teacher"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label">Location</label>
+                <input asp-for="Location" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupId" class="control-label">Group</label>
+                <select asp-for="GroupId" class="form-control" asp-items="ViewBag.Group"></select>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
