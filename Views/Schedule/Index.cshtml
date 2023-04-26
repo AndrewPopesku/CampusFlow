@@ -14,16 +14,16 @@
     <form asp-action="Index" method="get" class="d-inline-flex">
         <div class="form-group">
             Week:
-            <select type="text" name="isOddWeek" class="form-control">
-                @if(ViewBag.IsOddWeek)
+            <select type="text" name="weektype" class="form-control">
+                @if(ViewBag.WeekType == "Odd")
                 {
-                    <option id="odd" value="true" selected>Odd</option>
-                    <option id="even" value="false">Even</option>
+                    <option id="odd" value="Odd" selected>Odd</option>
+                    <option id="even" value="Even">Even</option>
                 }
                 else
                 {
-                    <option id="odd" value="true">Odd</option>
-                    <option id="even" value="false" selected>Even</option>
+                    <option id="odd" value="Odd">Odd</option>
+                    <option id="even" value="Even" selected>Even</option>
                 }
             </select>
         </div>

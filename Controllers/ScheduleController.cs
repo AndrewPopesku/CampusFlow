@@ -17,15 +17,16 @@ namespace CampusFlow.Controllers
         }
 
         // GET: Schedule
-        public async Task<IActionResult> Index(string isOddWeek = "true", int groupSelected = 6)
+        public async Task<IActionResult> Index(string weektype = "Odd", int groupSelected = 6)
         {
             ViewData["Days"] = ScheduleViewModel.Days;
             ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
-            ViewData["IsOddWeek"] = isOddWeek == "true";
+            ViewData["WeekType"] = weektype;
 
+            var wtype = weektype == WeekType.Odd.ToString() ? WeekType.Odd : WeekType.Even;
             var schedules = _context.Schedules
                 .Where(s => s.GroupId == groupSelected)
-                .Where(s => s.IsOddWeek.ToString().Equals(isOddWeek))
+                .Where(s => s.WeekType == wtype)
                 .Include(s => s.Teacher)
                 .Include(s => s.Subject)
                 .OrderBy(s => s.DayOfWeek);
