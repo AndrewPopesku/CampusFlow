@@ -80,7 +80,7 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DayOfWeek,ClassType,IsOddWeek,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
+        public async Task<IActionResult> Create([Bind("Id,DayOfWeek,ClassType,WeekType,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
         {
             ModelState.Remove("Subject");
             ModelState.Remove("TimeSlot");
@@ -97,7 +97,7 @@ namespace CampusFlow.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
+            
             ViewData["Days"] = new SelectList(ScheduleViewModel.Days, studentSchedule.DayOfWeek);
             ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
             ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
@@ -132,7 +132,7 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DayOfWeek,ClassType,IsOddWeek,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DayOfWeek,ClassType,WeekType,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
         {
             if (id != studentSchedule.Id)
             {
