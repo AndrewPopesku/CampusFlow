@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<ScheduleViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Schedule";
 }
 
-<h1>Index</h1>
+<h1>Schedule</h1>
 
 <div class="controls">
     <p>
         <a asp-action="Create">Create New</a>
     </p>
 
-    <form asp-action="Index" method="get" class="d-inline-flex">
+    <form asp-action="Index" method="get" class="d-inline-flex filter">
         <div class="form-group">
             Week:
             <select type="text" name="weektype" class="form-control">
@@ -32,7 +32,7 @@
             Group:
             <select type="text" name="groupSelected" class="form-control" asp-items="ViewBag.Group"></select>
         </div>
-        <input type="submit" value="Update" class="btn btn-primary" />
+        <input type="submit" value="Update" class="btn btn-primary filter-btn" />
     </form>
 </div>
 
@@ -102,4 +102,3 @@
         </tbody>
     </table>
 </div>
-

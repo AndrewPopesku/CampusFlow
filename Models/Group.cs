@@ -8,7 +8,11 @@ namespace CampusFlow.Models
         [System.ComponentModel.DataAnnotations.Key]
         public int Id { get; set; }
         [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+        public int GroupNumber { get; set; }
+        public string Subgroup { get; set; }
+        public string Name
+        {
+            get => GroupNumber + "-" + Subgroup;
+        }
     }
 }

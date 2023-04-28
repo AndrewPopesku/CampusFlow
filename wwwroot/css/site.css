@@ -42,5 +42,19 @@ img:first-child {
 }
 
 .controls .form-group {
-    margin: 0 40px;
+    margin: 0 30px;
+    display: flex;
+    align-items: center;
+}
+
+.controls .form-control {
+    margin: 0 16px;
+}
+
+.filter-btn {
+    height: 40px;
+}
+
+.filter {
+    margin: 10px 0;
 }

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<CampusFlow.Models.Group>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Group list";
 }
 
-<h1>Index</h1>
+<h1>Group list</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -24,11 +24,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none; margin-right: 15px">
+                        <img src="img/editing.png" alt="edit" width="20" />
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                        <img src="img/delete.png" alt="delete" width="17" />
+                    </a>
+                </td>
         </tr>
 }
     </tbody>

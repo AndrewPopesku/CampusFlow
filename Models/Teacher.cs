@@ -18,7 +18,7 @@ namespace CampusFlow.Models
 
         public string FullName
         {
-            get => FirstName + " " + LastName;
+            get => LastName + " " + FirstName + " " + MiddleName;
         }
     }
 }

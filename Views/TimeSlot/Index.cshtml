@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<TimeSlot>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Time slots";
 }
 
-<h1>Index</h1>
+<h1>Time slots</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -36,11 +36,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndTime)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TimeSlotId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TimeSlotId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TimeSlotId">Delete</a>
-            </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TimeSlotId" style="text-decoration: none; margin-right: 15px">
+                        <img src="img/editing.png" alt="edit" width="20" />
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.TimeSlotId" style="text-decoration: none;">
+                        <img src="img/delete.png" alt="delete" width="17" />
+                    </a>
+                </td>
         </tr>
 }
     </tbody>

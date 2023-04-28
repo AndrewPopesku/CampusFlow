@@ -86,12 +86,20 @@ namespace CampusFlow.Controllers
             ModelState.Remove("TimeSlot");
             ModelState.Remove("Teacher");
             ModelState.Remove("Group");
-            var schedules = _context.Schedules;
-            if (schedules.Any(s => s.TimeSlotId == studentSchedule.TimeSlotId && s.DayOfWeek == studentSchedule.DayOfWeek))
+            var schedules = _context.Schedules
+                .Include(s => s.Group);
+
+            if (schedules.Any(s => s.TimeSlotId == studentSchedule.TimeSlotId
+                && s.DayOfWeek == studentSchedule.DayOfWeek
+                && s.TeacherId == studentSchedule.TeacherId
+                && s.WeekType == studentSchedule.WeekType
+                && s.GroupId == studentSchedule.GroupId))
             {
-                ModelState.AddModelError("", "This slot is already occupied!");
+                ModelState.AddModelError("", "This slot is already reserved!"
+                                        +"\nPlease, try again");
             }
-            else if (ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
                 _context.Add(studentSchedule);
                 await _context.SaveChangesAsync();
