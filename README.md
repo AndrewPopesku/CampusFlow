@@ -4,10 +4,8 @@ CampusFlow is an ASP.NET Core 6 web application designed to help students find t
 
 ## Features
 
-- Course search: users can search for courses by name, number, or description.
 - Schedule builder: users can input their preferred courses, class times, and scheduling constraints (e.g. no classes on Fridays), and generate a schedule that meets their requirements.
 - Schedule preview: users can preview their generated schedule to see class times, locations, and other details.
-- Schedule sharing: users can share their generated schedule with friends or advisors.
 
 ## Installation
 
@@ -36,11 +34,3 @@ If you'd like to contribute to CampusFlow, please follow these steps:
 3. Make your changes and commit them: `git commit -am 'Add some feature'`
 4. Push your changes to your fork: `git push origin my-feature-branch`
 5. Create a pull request on the original repository.
-
-## License
-
-CampusFlow is licensed under the MIT license. See LICENSE for more details.
-
-## Contact
-
-If you have any questions or comments about CampusFlow, please contact us at campusflow@example.com.
