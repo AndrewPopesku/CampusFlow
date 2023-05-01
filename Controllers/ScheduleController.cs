@@ -67,7 +67,7 @@ namespace CampusFlow.Controllers
         // GET: Schedule/Create
         public async Task<IActionResult> Create()
         {
-            
+            GetScheduleViewData();
             return View();
         }
 
@@ -84,15 +84,14 @@ namespace CampusFlow.Controllers
             ModelState.Remove("Group");
             var schedules = _context.Schedules
                 .Include(s => s.Group);
-
+            
             if (schedules.Any(s => s.TimeSlotId == studentSchedule.TimeSlotId
                 && s.DayOfWeek == studentSchedule.DayOfWeek
                 && s.TeacherId == studentSchedule.TeacherId
-                && s.WeekType == studentSchedule.WeekType
-                && s.GroupId == studentSchedule.GroupId))
+                && s.WeekType == studentSchedule.WeekType))
             {
                 ModelState.AddModelError("", "This slot is already reserved!"
-                                        +"\nPlease, try again");
+                                        + "\nPlease, try again");
             }
 
             if (ModelState.IsValid)
@@ -211,7 +210,7 @@ namespace CampusFlow.Controllers
             return (_context.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private void GetScheduleViewData(StudentSchedule schedule)
+        private void GetScheduleViewData(StudentSchedule schedule = null)
         {
             if (schedule is null)
             {
