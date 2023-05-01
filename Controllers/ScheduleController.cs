@@ -67,12 +67,8 @@ namespace CampusFlow.Controllers
         // GET: Schedule/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["Days"] = new SelectList(ScheduleViewModel.Days);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName");
-            ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name");
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name");
-            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber");
-            return View(); 
+            
+            return View();
         }
 
         // POST: Schedule/Create
@@ -105,12 +101,8 @@ namespace CampusFlow.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
-            ViewData["Days"] = new SelectList(ScheduleViewModel.Days, studentSchedule.DayOfWeek);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
-            ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", studentSchedule.GroupId);
-            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", studentSchedule.TimeSlotId);
+
+            GetScheduleViewData(studentSchedule);
             return View(studentSchedule);
         }
 
@@ -127,11 +119,8 @@ namespace CampusFlow.Controllers
             {
                 return NotFound();
             }
-            ViewData["Days"] = new SelectList(ScheduleViewModel.Days);
-            ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", studentSchedule.GroupId);
-            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", studentSchedule.TimeSlotId);
+
+            GetScheduleViewData(studentSchedule);
             return View(studentSchedule);
         }
 
@@ -171,11 +160,8 @@ namespace CampusFlow.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Days"] = new SelectList(ScheduleViewModel.Days, studentSchedule.DayOfWeek);
-            ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", studentSchedule.SubjectId);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", studentSchedule.TeacherId);
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", studentSchedule.GroupId);
-            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", studentSchedule.TimeSlotId);
+
+            GetScheduleViewData(studentSchedule);
             return View(studentSchedule);
         }
 
@@ -223,6 +209,25 @@ namespace CampusFlow.Controllers
         private bool StudentScheduleExists(int id)
         {
             return (_context.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private void GetScheduleViewData(StudentSchedule schedule)
+        {
+            if (schedule is null)
+            {
+                ViewData["Days"] = new SelectList(ScheduleViewModel.Days);
+                ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName");
+                ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name");
+                ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name");
+                ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber");
+                return;
+            }
+
+            ViewData["Days"] = new SelectList(ScheduleViewModel.Days, schedule.DayOfWeek);
+            ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", schedule.SubjectId);
+            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", schedule.TeacherId);
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", schedule.GroupId);
+            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", schedule.TimeSlotId);
         }
     }
 }
