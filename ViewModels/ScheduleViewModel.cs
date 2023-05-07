@@ -4,12 +4,12 @@ namespace CampusFlow.ViewModels
 {
     public class ScheduleViewModel
     {
-        public List<StudentSchedule> Schedules { get; set; }
+        public List<Class> Classes { get; set; }
         public TimeSlot TimeSlot { get; set; }
 
-        public ScheduleViewModel(List<StudentSchedule> sch, TimeSlot ts)
+        public ScheduleViewModel(List<Class> sch, TimeSlot ts)
         {
-            Schedules = sch;
+            Classes = sch;
             TimeSlot = ts;
         }
         public static List<DayOfWeek> Days

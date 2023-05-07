@@ -9,6 +9,6 @@ namespace CampusFlow.Models
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 
-        public virtual ICollection<StudentSchedule> Schedules { get; set; }
+        public virtual ICollection<Class> Schedules { get; set; }
     }
 }

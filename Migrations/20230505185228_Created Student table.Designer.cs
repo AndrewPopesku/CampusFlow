@@ -4,6 +4,7 @@ using CampusFlow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusFlow.Migrations
 {
     [DbContext(typeof(CampusContext))]
-    partial class ScheduleContextModelSnapshot : ModelSnapshot
+    [Migration("20230505185228_Created Student table")]
+    partial class CreatedStudenttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,32 +70,6 @@ namespace CampusFlow.Migrations
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.ClassCycle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("SemesterId");
-
-                    b.ToTable("ClassCycles");
-                });
-
             modelBuilder.Entity("CampusFlow.Models.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -110,32 +87,6 @@ namespace CampusFlow.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("CampusFlow.Models.Semester", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SemesterType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Semester");
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Subject", b =>
@@ -238,25 +189,6 @@ namespace CampusFlow.Migrations
                     b.Navigation("Teacher");
 
                     b.Navigation("TimeSlot");
-                });
-
-            modelBuilder.Entity("CampusFlow.Models.ClassCycle", b =>
-                {
-                    b.HasOne("CampusFlow.Models.Class", "Class")
-                        .WithMany()
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CampusFlow.Models.Semester", "Semester")
-                        .WithMany()
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Class");
-
-                    b.Navigation("Semester");
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Subject", b =>

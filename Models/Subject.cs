@@ -7,6 +7,6 @@ namespace CampusFlow.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public ICollection<StudentSchedule> Schedules { get; set; }
+        public ICollection<Class> Classes { get; set; }
     }
 }

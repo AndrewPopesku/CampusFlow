@@ -15,12 +15,12 @@ namespace CampusFlow.Models
         Even
     }
 
-    public class StudentSchedule
+    public class Class
     {
         public int Id { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
         public ClassType ClassType { get; set; }
         public WeekType WeekType { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
         public string? Location { get; set; }
         public int TeacherId { get; set; }
         public int SubjectId { get; set; }

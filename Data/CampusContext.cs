@@ -10,7 +10,7 @@ namespace CampusFlow.Data
         }
 
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<StudentSchedule> Schedules { get; set; }
+        public DbSet<Class> Classes { get; set; }
         public DbSet<CampusFlow.Models.TimeSlot>? TimeSlot { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -19,7 +19,7 @@ namespace CampusFlow.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Subject>().HasMany(s => s.Schedules).WithOne(s => s.Subject);
+            modelBuilder.Entity<Subject>().HasMany(s => s.Classes).WithOne(s => s.Subject);
         }
 
     }
