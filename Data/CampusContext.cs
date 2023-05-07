@@ -22,5 +22,7 @@ namespace CampusFlow.Data
             modelBuilder.Entity<Subject>().HasMany(s => s.Classes).WithOne(s => s.Subject);
         }
 
+        public DbSet<CampusFlow.Models.ClassCycle>? ClassCycle { get; set; }
+
     }
 }

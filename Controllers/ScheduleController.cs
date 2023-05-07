@@ -24,8 +24,8 @@ namespace CampusFlow.Controllers
             ViewData["WeekType"] = weektype;
 
             var classes = _context.Classes
-                .Where(s => s.GroupId == groupSelected)
-                .Where(s => s.WeekType == Enum.Parse<WeekType>(weektype))
+                .Where(s => s.GroupId == groupSelected 
+                    && s.WeekType == Enum.Parse<WeekType>(weektype))
                 .Include(s => s.Teacher)
                 .Include(s => s.Subject)
                 .OrderBy(s => s.DayOfWeek);
@@ -38,6 +38,7 @@ namespace CampusFlow.Controllers
                 viewModelList.Add(new ScheduleViewModel(await classes.Where(s => s.TimeSlotId == item.TimeSlotId).ToListAsync(),
                     item));
             }
+
             return View(viewModelList);
         }
 
@@ -55,6 +56,7 @@ namespace CampusFlow.Controllers
                 .Include(s => s.Subject)
                 .Include(s => s.TimeSlot)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (studyClass == null)
             {
                 return NotFound();
