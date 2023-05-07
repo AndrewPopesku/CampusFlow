@@ -17,12 +17,8 @@ namespace CampusFlow.Controllers
         }
 
         // GET: Schedule
-        public async Task<IActionResult> Index(string weektype = "Odd", int groupSelected = 6)
+        public async Task<IActionResult> Index(string weektype = "Odd", int groupSelected = 8)
         {
-            ViewData["Days"] = ScheduleViewModel.Days;
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
-            ViewData["WeekType"] = weektype;
-
             var classes = _context.Classes
                 .Where(s => s.GroupId == groupSelected 
                     && s.WeekType == Enum.Parse<WeekType>(weektype))
@@ -38,6 +34,10 @@ namespace CampusFlow.Controllers
                 viewModelList.Add(new ScheduleViewModel(await classes.Where(s => s.TimeSlotId == item.TimeSlotId).ToListAsync(),
                     item));
             }
+
+            ViewData["Days"] = ScheduleViewModel.Days;
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
+            ViewData["WeekType"] = weektype;
 
             return View(viewModelList);
         }

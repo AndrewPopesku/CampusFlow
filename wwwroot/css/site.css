@@ -58,3 +58,11 @@ img:first-child {
 .filter {
     margin: 10px 0;
 }
+
+.left-align {
+    margin-left: auto;
+}
+
+.active-day {
+    background-color: #d0d0d0 !important;
+}

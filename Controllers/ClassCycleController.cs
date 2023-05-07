@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CampusFlow.Data;
 using CampusFlow.Models;
+using CampusFlow.ViewModels;
+using CampusFlow.Extensions;
 
 namespace CampusFlow.Controllers
 {
@@ -20,10 +22,53 @@ namespace CampusFlow.Controllers
         }
 
         // GET: ClassCycle
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string weektype = "Odd", int groupSelected = 8)
         {
-            var campusContext = _context.ClassCycle.Include(c => c.Class).Include(c => c.Semester);
-            return View(await campusContext.ToListAsync());
+            var ccList = await _context.ClassCycles
+                .Include(cc => cc.Class)
+                .ThenInclude(c => c.Subject)
+                .Include(cc => cc.Class)
+                .ThenInclude(c => c.Teacher)
+                .Where(cc => cc.Class.GroupId == groupSelected && cc.Class.WeekType == Enum.Parse<WeekType>(weektype))
+                .ToListAsync();
+
+            var startOfWeekDate = DateTime.Now.DateByWeekDay(DayOfWeek.Monday);
+
+            var classes = _context.Classes
+                .Where(c => c.GroupId == groupSelected && c.WeekType == Enum.Parse<WeekType>(weektype))
+                .OrderBy(c => c.DayOfWeek);
+
+            if (!ccList.Any(cc => cc.Date >= startOfWeekDate) && classes.Any())
+            {
+                var semId = await _context.Semesters.Select(s => s.Id).FirstOrDefaultAsync();
+                foreach (var studyClass in classes)
+                {
+                    ccList.Add(new ClassCycle(DateTime.Now.DateByWeekDay(studyClass.DayOfWeek), studyClass.Id, semId));
+                }
+
+                _context.AddRange(ccList);
+                await _context.SaveChangesAsync();
+                ccList = await _context.ClassCycles
+                    .Include(cc => cc.Class)
+                    .ThenInclude(c => c.Subject)
+                    .Include(cc => cc.Class)
+                    .ThenInclude(c => c.Teacher)
+                    .ToListAsync();
+            }
+
+            var timeslots = await _context.TimeSlot.ToListAsync();
+            var viewModelList = new List<ClassCycleViewModel>();
+
+            foreach (var item in timeslots)
+            {
+                viewModelList.Add(new ClassCycleViewModel(ccList.Where(cc => cc.Class.TimeSlotId == item.TimeSlotId).ToList(), item));
+            }
+
+            ViewData["Dates"] = Enumerable.Range(0, 5).Select(d => startOfWeekDate.AddDays(d)).ToList();
+            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
+            ViewData["WeekType"] = weektype;
+
+            return View(viewModelList);
         }
 
         // GET: ClassCycle/Details/5
