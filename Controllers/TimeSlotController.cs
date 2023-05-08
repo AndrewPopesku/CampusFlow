@@ -41,7 +41,7 @@ namespace CampusFlow.Controllers
             }
 
             var timeSlot = await _context.TimeSlot
-                .FirstOrDefaultAsync(m => m.TimeSlotId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (timeSlot == null)
             {
                 return NotFound();
@@ -95,7 +95,7 @@ namespace CampusFlow.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ClassNumber,StartTime,EndTime")] TimeSlot timeSlot)
         {
-            if (id != timeSlot.TimeSlotId)
+            if (id != timeSlot.Id)
             {
                 return NotFound();
             }
@@ -109,7 +109,7 @@ namespace CampusFlow.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TimeSlotExists(timeSlot.TimeSlotId))
+                    if (!TimeSlotExists(timeSlot.Id))
                     {
                         return NotFound();
                     }
@@ -132,7 +132,7 @@ namespace CampusFlow.Controllers
             }
 
             var timeSlot = await _context.TimeSlot
-                .FirstOrDefaultAsync(m => m.TimeSlotId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (timeSlot == null)
             {
                 return NotFound();
@@ -162,7 +162,7 @@ namespace CampusFlow.Controllers
 
         private bool TimeSlotExists(int id)
         {
-          return (_context.TimeSlot?.Any(e => e.TimeSlotId == id)).GetValueOrDefault();
+          return (_context.TimeSlot?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

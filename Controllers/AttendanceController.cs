@@ -10,22 +10,22 @@ using CampusFlow.Models;
 
 namespace CampusFlow.Controllers
 {
-    public class AttendanceController : Controller
+    public class AttendancesController : Controller
     {
         private readonly CampusContext _context;
 
-        public AttendanceController(CampusContext context)
+        public AttendancesController(CampusContext context)
         {
             _context = context;
         }
 
-        // GET: Attendance
+        // GET: Attendances
         public async Task<IActionResult> Index(int classId)
         {
             var attends = _context.Attendances
-                .Where(a => a.ClassId == classId)
+                .Where(a => a.ScheduleId == classId)
                 .Include(a => a.Student)
-                .Include(a => a.ClassCycle);
+                .Include(a => a.Schedule);
             
             if (!attends.Any())
             {
@@ -33,30 +33,30 @@ namespace CampusFlow.Controllers
                 var newList = new List<Attendance>();
                 foreach (var student in students)
                 {
-                    newList.Add(new Attendance() { ClassId = classId, StudentId = student.Id });
+                    newList.Add(new Attendance() { ScheduleId = classId, StudentId = student.Id });
                 }
 
                 _context.AddRange(newList);
                 await _context.SaveChangesAsync();
                 attends = _context.Attendances
-                    .Where(a => a.ClassId == classId)
+                    .Where(a => a.ScheduleId == classId)
                     .Include(a => a.Student)
-                    .Include(a => a.ClassCycle);
+                    .Include(a => a.Schedule);
             }
 
-            ViewData["Class"] = attends.Select(a => a.ClassCycle).First();
+            ViewData["Class"] = attends.Select(a => a.Schedule).First();
             return View(attends);
         }
 
-        // GET: Attendance/Details/5
+        // GET: Attendances/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Attendance == null)
+            if (id == null || _context.Attendances == null)
             {
                 return NotFound();
             }
 
-            var attendance = await _context.Attendance
+            var attendance = await _context.Attendances
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (attendance == null)
             {
@@ -66,18 +66,18 @@ namespace CampusFlow.Controllers
             return View(attendance);
         }
 
-        // GET: Attendance/Create
+        // GET: Attendances/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Attendance/Create
+        // POST: Attendances/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClassId,StudentId")] Attendance attendance)
+        public async Task<IActionResult> Create([Bind("Id,ScheduleId,StudentId")] Attendance attendance)
         {
             ModelState.Remove("Class");
             ModelState.Remove("Student");
@@ -90,15 +90,15 @@ namespace CampusFlow.Controllers
             return View(attendance);
         }
 
-        // GET: Attendance/Edit/5
+        // GET: Attendances/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Attendance == null)
+            if (id == null || _context.Attendances == null)
             {
                 return NotFound();
             }
 
-            var attendance = await _context.Attendance.FindAsync(id);
+            var attendance = await _context.Attendances.FindAsync(id);
             if (attendance == null)
             {
                 return NotFound();
@@ -106,12 +106,12 @@ namespace CampusFlow.Controllers
             return View(attendance);
         }
 
-        // POST: Attendance/Edit/5
+        // POST: Attendances/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassId,StudentId")] Attendance attendance)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ScheduleId,StudentId")] Attendance attendance)
         {
             if (id != attendance.Id)
             {
@@ -129,7 +129,7 @@ namespace CampusFlow.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AttendanceExists(attendance.Id))
+                    if (!AttendancesExists(attendance.Id))
                     {
                         return NotFound();
                     }
@@ -143,15 +143,15 @@ namespace CampusFlow.Controllers
             return View(attendance);
         }
 
-        // GET: Attendance/Delete/5
+        // GET: Attendances/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Attendance == null)
+            if (id == null || _context.Attendances == null)
             {
                 return NotFound();
             }
 
-            var attendance = await _context.Attendance
+            var attendance = await _context.Attendances
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (attendance == null)
             {
@@ -161,28 +161,28 @@ namespace CampusFlow.Controllers
             return View(attendance);
         }
 
-        // POST: Attendance/Delete/5
+        // POST: Attendances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Attendance == null)
+            if (_context.Attendances == null)
             {
-                return Problem("Entity set 'CampusContext.Attendance'  is null.");
+                return Problem("Entity set 'CampusContext.Attendances'  is null.");
             }
-            var attendance = await _context.Attendance.FindAsync(id);
+            var attendance = await _context.Attendances.FindAsync(id);
             if (attendance != null)
             {
-                _context.Attendance.Remove(attendance);
+                _context.Attendances.Remove(attendance);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AttendanceExists(int id)
+        private bool AttendancesExists(int id)
         {
-          return (_context.Attendance?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Attendances?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -20,5 +20,8 @@ namespace CampusFlow.Models
         public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
+
+        public virtual ICollection<Schedule> Schedules { get; set; }
+        public virtual ICollection<Class> Classes { get; set; }
     }
 }
