@@ -62,14 +62,16 @@
                         {
                             <text>class="active-day"</text>
                         }>
-                            <div class="schedule-slot">
-                                <div class="schedule-text">
+                            <a asp-controller="Attendance" asp-action="Index" asp-route-classId="@studyClass.Id" style="text-decoration: none; margin-right: 15px">
+                                <div class="schedule-slot">
+                                    <div class="schedule-text">
                                     @studyClass.Class.Subject.Name<br />
-                                    <i>@studyClass.Class.ClassType</i><br />
+                                        <i>@studyClass.Class.ClassType</i><br />
                                     @studyClass.Class.Teacher.FullName<br />
                                     @studyClass.Class.Location
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </td>
                         day++;
                     }

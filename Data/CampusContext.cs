@@ -16,6 +16,8 @@ namespace CampusFlow.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<ClassCycle> ClassCycles { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +30,10 @@ namespace CampusFlow.Data
         }
 
         public DbSet<CampusFlow.Models.ClassCycle>? ClassCycle { get; set; }
+
+        public DbSet<CampusFlow.Models.Attendance>? Attendance { get; set; }
+
+        public DbSet<CampusFlow.Models.Student>? Student { get; set; }
 
     }
 }

@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CampusFlow.Models
 {
     public class ClassCycle
     {
+        [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public int? ClassId { get; set; }
