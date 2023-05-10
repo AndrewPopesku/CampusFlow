@@ -64,5 +64,10 @@ img:first-child {
 }
 
 .active-day {
-    background-color: #d0d0d0 !important;
+    background-color: #c2dcff !important;
+}
+
+.schedule-slot {
+    width: fit-content;
+    height: fit-content;
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CampusFlow.Models;
+using System.Xml;
 
 namespace CampusFlow.Data
 {
@@ -17,6 +18,7 @@ namespace CampusFlow.Data
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<ScheduleDate> ScheduleDates { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +36,8 @@ namespace CampusFlow.Data
                 .WithMany(s => s.Classes)
                 .HasForeignKey(c => c.SemesterId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<ScheduleDate>().ToTable("ScheduleDate");
         }
     }
 }

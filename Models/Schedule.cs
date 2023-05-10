@@ -23,5 +23,7 @@ namespace CampusFlow.Models
         public virtual TimeSlot TimeSlot { get; set; }
         public virtual Semester? Semester { get; set; }
         public virtual Group Group { get; set; }
+        public virtual ICollection<ScheduleDate> ScheduleDates { get; set; }
+
     }
 }

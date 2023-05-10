@@ -4,6 +4,7 @@ using CampusFlow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusFlow.Migrations
 {
     [DbContext(typeof(CampusContext))]
-    partial class ScheduleContextModelSnapshot : ModelSnapshot
+    [Migration("20230508075909_Added ScheduleAttendance table")]
+    partial class AddedScheduleAttendancetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,10 +33,13 @@ namespace CampusFlow.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsPresent")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ScheduleDateId")
+                    b.Property<int>("ScheduleId")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentId")
@@ -41,7 +47,7 @@ namespace CampusFlow.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScheduleDateId");
+                    b.HasIndex("ScheduleId");
 
                     b.HasIndex("StudentId");
 
@@ -146,25 +152,22 @@ namespace CampusFlow.Migrations
                     b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.ScheduleDate", b =>
+            modelBuilder.Entity("CampusFlow.Models.ScheduleAttendance", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ScheduleId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("AttendanceId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("int");
+                    b.HasKey("ScheduleId", "AttendanceId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("AttendanceId");
 
-                    b.HasIndex("ScheduleId");
-
-                    b.ToTable("ScheduleDate");
+                    b.ToTable("ScheduleAttendance");
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Semester", b =>
@@ -268,9 +271,9 @@ namespace CampusFlow.Migrations
 
             modelBuilder.Entity("CampusFlow.Models.Attendance", b =>
                 {
-                    b.HasOne("CampusFlow.Models.ScheduleDate", "ScheduleDate")
+                    b.HasOne("CampusFlow.Models.Schedule", "Schedule")
                         .WithMany()
-                        .HasForeignKey("ScheduleDateId")
+                        .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -280,7 +283,7 @@ namespace CampusFlow.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ScheduleDate");
+                    b.Navigation("Schedule");
 
                     b.Navigation("Student");
                 });
@@ -337,20 +340,23 @@ namespace CampusFlow.Migrations
                     b.Navigation("TimeSlot");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.ScheduleDate", b =>
+            modelBuilder.Entity("CampusFlow.Models.ScheduleAttendance", b =>
                 {
+                    b.HasOne("CampusFlow.Models.Attendance", "Attendance")
+                        .WithMany()
+                        .HasForeignKey("AttendanceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CampusFlow.Models.Schedule", "Schedule")
-                        .WithMany("ScheduleDates")
+                        .WithMany()
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Schedule");
-                });
+                    b.Navigation("Attendance");
 
-            modelBuilder.Entity("CampusFlow.Models.Schedule", b =>
-                {
-                    b.Navigation("ScheduleDates");
+                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Semester", b =>

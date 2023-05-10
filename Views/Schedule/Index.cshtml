@@ -1,0 +1,59 @@
+﻿@using CampusFlow.Extensions;
+@model List<ScheduleViewModel>
+
+@{
+    ViewData["Title"] = "Current Week Schedule";
+    var today = DateTime.Today.DayOfWeek;
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <a asp-action="Create">Create New</a>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Time Slot</th>
+                    @foreach(var date in ViewBag.CurrentDates)
+                    {
+                        <th>@date.ToString("dddd, dd MMMM")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var timeSlot in ViewBag.TimeSlots)
+                {
+                    <tr>
+                        <td>
+                            @timeSlot.ClassNumber
+                            <br/>
+                            @timeSlot.StartTime - @timeSlot.EndTime
+                        </td>
+                        @foreach (var date in ViewBag.CurrentDates)
+                        {
+                            var schedule = Model.FirstOrDefault(s =>
+                                s.TimeSlot.Id == timeSlot.Id &&
+                                s.DayOfWeek == date.DayOfWeek);
+                            <td
+                            @if(date.DayOfWeek.Equals(today))
+                            {
+                                <text> class="active-day"</text>   
+                            }
+                            >
+                                @if (schedule != null)
+                                {
+                                    <a asp-controller="Attendance" asp-action="Index" 
+                                        asp-route-scheduleDateId="@schedule.ScheduleDateId">
+                                                    <div class="schedule-slot">
+                                            @(schedule != null ? $"{schedule.ClassName} ({schedule.TeacherName})" : "")
+                                        </div>
+                                    </a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

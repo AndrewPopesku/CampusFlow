@@ -10,84 +10,66 @@ using CampusFlow.Models;
 
 namespace CampusFlow.Controllers
 {
-    public class AttendancesController : Controller
+    public class AttendanceController : Controller
     {
         private readonly CampusContext _context;
 
-        public AttendancesController(CampusContext context)
+        public AttendanceController(CampusContext context)
         {
             _context = context;
         }
 
         // GET: Attendances
-        public async Task<IActionResult> Index(int classId)
+        public async Task<IActionResult> Index(int scheduleDateId)
         {
-            var attends = _context.Attendances
-                .Where(a => a.ScheduleId == classId)
-                .Include(a => a.Student)
-                .Include(a => a.Schedule);
-            
-            if (!attends.Any())
+            if (!await _context.Attendances.AnyAsync(a => a.ScheduleDateId == scheduleDateId))
             {
-                var students = _context.Students;
-                var newList = new List<Attendance>();
+                var students = await _context.Students.ToListAsync();
+                var newAttends = new List<Attendance>();
                 foreach (var student in students)
                 {
-                    newList.Add(new Attendance() { ScheduleId = classId, StudentId = student.Id });
+                    newAttends.Add(new Attendance()
+                    {
+                        ScheduleDateId = scheduleDateId,
+                        StudentId = student.Id,
+                        IsPresent = true
+                    });
                 }
 
-                _context.AddRange(newList);
+                await _context.AddRangeAsync(newAttends);
                 await _context.SaveChangesAsync();
-                attends = _context.Attendances
-                    .Where(a => a.ScheduleId == classId)
-                    .Include(a => a.Student)
-                    .Include(a => a.Schedule);
             }
 
-            ViewData["Class"] = attends.Select(a => a.Schedule).First();
+            var attends = await _context.Attendances
+                .Where(a => a.ScheduleDateId == scheduleDateId)
+                .Include(a => a.Student)
+                .ToListAsync();
+
+            ViewData["Date"] = await _context.ScheduleDates
+                .Where(sd => sd.Id == scheduleDateId)
+                .Select(sd => sd.Date)
+                .SingleOrDefaultAsync();
+
             return View(attends);
         }
 
-        // GET: Attendances/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+        public async Task<IActionResult> UpdateAll(int scheduleDateId, Dictionary<int, bool> attendanceStatuses)
         {
-            if (id == null || _context.Attendances == null)
+            if (attendanceStatuses != null)
             {
-                return NotFound();
-            }
+                foreach (var attendanceStatus in attendanceStatuses)
+                {
+                    var attendance = await _context.Attendances.SingleOrDefaultAsync(a => a.StudentId == attendanceStatus.Key 
+                                                && a.ScheduleDateId == scheduleDateId);
+                    attendance.IsPresent = attendanceStatus.Value;
+                    _context.Entry(attendance).State = EntityState.Modified;
+                }
 
-            var attendance = await _context.Attendances
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (attendance == null)
-            {
-                return NotFound();
-            }
-
-            return View(attendance);
-        }
-
-        // GET: Attendances/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Attendances/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ScheduleId,StudentId")] Attendance attendance)
-        {
-            ModelState.Remove("Class");
-            ModelState.Remove("Student");
-            if (ModelState.IsValid)
-            {
-                _context.Add(attendance);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(attendance);
+
+            return RedirectToAction("Index", new { scheduleDateId = scheduleDateId });
         }
 
         // GET: Attendances/Edit/5
