@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CampusFlow.Data;
 using CampusFlow.Models;
 using CampusFlow.ViewModels;
+using CampusFlow.Extensions;
 
 namespace CampusFlow.Controllers
 {
@@ -16,30 +20,54 @@ namespace CampusFlow.Controllers
             _context = context;
         }
 
+
         // GET: Schedule
-        public async Task<IActionResult> Index(string weektype = "Odd", int groupSelected = 6)
+        public async Task<IActionResult> Index()
         {
-            ViewData["Days"] = ScheduleViewModel.Days;
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
-            ViewData["WeekType"] = weektype;
+            var startDate = DateTime.Today.DateByWeekDay(DayOfWeek.Monday);
+            var endDate = startDate.AddDays(6);
 
-            var wtype = weektype == WeekType.Odd.ToString() ? WeekType.Odd : WeekType.Even;
-            var schedules = _context.Schedules
-                .Where(s => s.GroupId == groupSelected)
-                .Where(s => s.WeekType == wtype)
-                .Include(s => s.Teacher)
-                .Include(s => s.Subject)
-                .OrderBy(s => s.DayOfWeek);
+            ViewData["CurrentDates"] = Enumerable.Range(0, (endDate - startDate).Days + 1)
+                                                 .Select(d => startDate.AddDays(d))
+                                                 .ToList();
 
-            var timeslots = await _context.TimeSlot.ToListAsync();
-            var viewModelList = new List<ScheduleViewModel>();
+            var currentWeekSchedule = await _context.Schedules
+                .Include(s => s.ScheduleDates.Where(sd => sd.Date >= startDate && sd.Date <= endDate))
+                .Include(s => s.TimeSlot)
+                .Include(s => s.Class)
+                    .ThenInclude(c => c.Teacher)
+                .ToListAsync();
 
-            foreach (var item in timeslots)
+            foreach (var currentSchedule in currentWeekSchedule)
             {
-                viewModelList.Add(new ScheduleViewModel(await schedules.Where(s => s.TimeSlotId == item.TimeSlotId).ToListAsync(),
-                    item));
+                if (!currentSchedule.ScheduleDates.Any())
+                {
+                    var currentDate = startDate.AddDays((int) currentSchedule.DayOfWeek - 1);
+                    var scheduleDate = new ScheduleDate()
+                    {
+                        ScheduleId = currentSchedule.Id,
+                        Date = currentDate
+                    };
+
+                    await _context.AddAsync(scheduleDate);
+                    await _context.SaveChangesAsync();
+
+                    
+                }
             }
-            return View(viewModelList);
+
+            ViewData["TimeSlots"] = await _context.TimeSlot.ToListAsync();
+            var currentWeekScheduleViewModel = currentWeekSchedule.Select(s => new ScheduleViewModel
+            {
+                ClassName = s.Class.Name,
+                DayOfWeek = s.DayOfWeek,
+                TimeSlot = s.TimeSlot,
+                TeacherName = s.Class.Teacher.FullName,
+                ClassType = s.Class.ClassType.ToString(),
+                ScheduleDateId = s.ScheduleDates.Select(sd => sd.Id).SingleOrDefault(),
+            }).ToList();
+
+            return View(currentWeekScheduleViewModel);
         }
 
         // GET: Schedule/Details/5
@@ -50,24 +78,24 @@ namespace CampusFlow.Controllers
                 return NotFound();
             }
 
-            var studentSchedule = await _context.Schedules
+            var schedule = await _context.Schedules
+                .Include(s => s.Class)
                 .Include(s => s.Group)
-                .Include(s => s.Teacher)
-                .Include(s => s.Subject)
+                .Include(s => s.Semester)
                 .Include(s => s.TimeSlot)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (studentSchedule == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return View(studentSchedule);
+            return View(schedule);
         }
 
         // GET: Schedule/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            GetScheduleViewData();
+            SetScheduleViewData();
             return View();
         }
 
@@ -76,51 +104,37 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DayOfWeek,ClassType,WeekType,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
+        public async Task<IActionResult> Create([Bind("Id,ClassId,TimeSlotId,DayOfWeek,WeekType,SemesterId,GroupId")] Schedule schedule)
         {
-            ModelState.Remove("Subject");
-            ModelState.Remove("TimeSlot");
-            ModelState.Remove("Teacher");
-            ModelState.Remove("Group");
-            var schedules = _context.Schedules
-                .Include(s => s.Group);
-            
-            if (schedules.Any(s => s.TimeSlotId == studentSchedule.TimeSlotId
-                && s.DayOfWeek == studentSchedule.DayOfWeek
-                && s.TeacherId == studentSchedule.TeacherId
-                && s.WeekType == studentSchedule.WeekType))
-            {
-                ModelState.AddModelError("", "This slot is already reserved!"
-                                        + "\nPlease, try again");
-            }
+            SetScheduleViewData(schedule);
 
             if (ModelState.IsValid)
             {
-                _context.Add(studentSchedule);
+                _context.Add(schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            GetScheduleViewData(studentSchedule);
-            return View(studentSchedule);
+            return View(schedule);
         }
 
         // GET: Schedule/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null || _context.Schedules == null)
             {
                 return NotFound();
             }
 
-            var studentSchedule = await _context.Schedules.FindAsync(id);
-            if (studentSchedule == null)
+            var schedule = await _context.Schedules.FindAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            GetScheduleViewData(studentSchedule);
-            return View(studentSchedule);
+            SetScheduleViewData(schedule);
+            return View(schedule);
         }
 
         // POST: Schedule/Edit/5
@@ -128,27 +142,23 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DayOfWeek,ClassType,WeekType,Location,TeacherId,GroupId,SubjectId,TimeSlotId")] StudentSchedule studentSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClassId,TimeSlotId,DayOfWeek,WeekType,SemesterId,GroupId")] Schedule schedule)
         {
-            if (id != studentSchedule.Id)
+            if (id != schedule.Id)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("Subject");
-            ModelState.Remove("TimeSlot");
-            ModelState.Remove("Teacher");
-            ModelState.Remove("Group");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(studentSchedule);
+                    _context.Update(schedule);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentScheduleExists(studentSchedule.Id))
+                    if (!ScheduleExists(schedule.Id))
                     {
                         return NotFound();
                     }
@@ -160,8 +170,8 @@ namespace CampusFlow.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            GetScheduleViewData(studentSchedule);
-            return View(studentSchedule);
+            SetScheduleViewData(schedule);
+            return View(schedule);
         }
 
         // GET: Schedule/Delete/5
@@ -172,18 +182,18 @@ namespace CampusFlow.Controllers
                 return NotFound();
             }
 
-            var studentSchedule = await _context.Schedules
+            var schedule = await _context.Schedules
+                .Include(s => s.Class)
                 .Include(s => s.Group)
-                .Include(s => s.Teacher)
-                .Include(s => s.Subject)
+                .Include(s => s.Semester)
                 .Include(s => s.TimeSlot)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (studentSchedule == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return View(studentSchedule);
+            return View(schedule);
         }
 
         // POST: Schedule/Delete/5
@@ -193,40 +203,44 @@ namespace CampusFlow.Controllers
         {
             if (_context.Schedules == null)
             {
-                return Problem("Entity set 'ScheduleContext.Schedules'  is null.");
+                return Problem("Entity set 'CampusContext.Schedules'  is null.");
             }
-            var studentSchedule = await _context.Schedules.FindAsync(id);
-            if (studentSchedule != null)
+            var schedule = await _context.Schedules.FindAsync(id);
+            if (schedule != null)
             {
-                _context.Schedules.Remove(studentSchedule);
+                _context.Schedules.Remove(schedule);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentScheduleExists(int id)
+        private bool ScheduleExists(int id)
         {
-            return (_context.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private void GetScheduleViewData(StudentSchedule schedule = null)
+        public void SetScheduleViewData(Schedule schedule = null)
         {
-            if (schedule is null)
+            ModelState.Remove("Class");
+            ModelState.Remove("Group");
+            ModelState.Remove("Semester");
+            ModelState.Remove("TimeSlot");
+            ModelState.Remove("Attendances");
+
+            if (schedule == null)
             {
-                ViewData["Days"] = new SelectList(ScheduleViewModel.Days);
-                ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName");
-                ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name");
-                ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name");
-                ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber");
+                ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Location");
+                ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id");
+                ViewData["SemesterId"] = new SelectList(_context.Semesters, "Id", "Id");
+                ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id");
                 return;
             }
 
-            ViewData["Days"] = new SelectList(ScheduleViewModel.Days, schedule.DayOfWeek);
-            ViewData["Subject"] = new SelectList(_context.Subjects, "Id", "Name", schedule.SubjectId);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Id", "FullName", schedule.TeacherId);
-            ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name", schedule.GroupId);
-            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "TimeSlotId", "ClassNumber", schedule.TimeSlotId);
+            ViewData["Class"] = new SelectList(_context.Classes, "Id", "Location", schedule.ClassId);
+            ViewData["Groud"] = new SelectList(_context.Groups, "Id", "Id", schedule.GroupId);
+            ViewData["Semester"] = new SelectList(_context.Semesters, "Id", "Id", schedule.SemesterId);
+            ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "Id", "Id", schedule.TimeSlotId);
         }
     }
 }

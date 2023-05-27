@@ -1,104 +1,59 @@
-﻿@model IEnumerable<ScheduleViewModel>
+﻿@using CampusFlow.Extensions;
+@model List<ScheduleViewModel>
 
 @{
-    ViewData["Title"] = "Schedule";
+    ViewData["Title"] = "Current Week Schedule";
+    var today = DateTime.Today.DayOfWeek;
 }
 
-<h1>Schedule</h1>
-
-<div class="controls">
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-
-    <form asp-action="Index" method="get" class="d-inline-flex filter">
-        <div class="form-group">
-            Week:
-            <select type="text" name="weektype" class="form-control">
-                @if(ViewBag.WeekType == "Odd")
-                {
-                    <option id="odd" value="Odd" selected>Odd</option>
-                    <option id="even" value="Even">Even</option>
-                }
-                else
-                {
-                    <option id="odd" value="Odd">Odd</option>
-                    <option id="even" value="Even" selected>Even</option>
-                }
-            </select>
-        </div>
-
-        <div class="form-group">
-            Group:
-            <select type="text" name="groupSelected" class="form-control" asp-items="ViewBag.Group"></select>
-        </div>
-        <input type="submit" value="Update" class="btn btn-primary filter-btn" />
-    </form>
-</div>
-
-<div class="table-responsize">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th></th>
-                @foreach (var day in ViewBag.Days)
-                {
-                    <th>
-                        @day
-                    </th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                int day = 1;
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <a asp-action="Create">Create New</a>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-light">
                 <tr>
-                    <td>
-                        <center>
-                        <h4>@item.TimeSlot.ClassNumber</h4>
-                            @item.TimeSlot.StartTime.ToString(@"hh\:mm") - @item.TimeSlot.EndTime.ToString(@"hh\:mm")
-                        </center>
-                    </td>
-                    @foreach (var schedule in item.Schedules)
+                    <th>Time Slot</th>
+                    @foreach(var date in ViewBag.CurrentDates)
                     {
-                        @while ((int) schedule.DayOfWeek != day)
-                        {
-                            day++;
-                            <td>
-                            </td>
-                        }
-                        <td>
-                            <div class="schedule-slot">
-                                <div class="schedule-text">
-                                    @schedule.Subject.Name
-                                    <br />
-                                    <i>@schedule.ClassType</i>
-                                    <br />
-                                    @schedule.Teacher.FullName
-                                    <br />
-                                    @schedule.Location
-                                </div>
-                                <div class="buttons">
-                                    <a asp-action="Edit" asp-route-id="@schedule.Id">
-                                        <img src="img/editing.png" alt="edit" width="20"/>
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@schedule.Id">
-                                        <img src="img/delete.png" alt="delete" width="20"/>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                        day++;
-                    }
-                    @while (day != 6)
-                    {
-                        day++;
-                        <td>
-                        </td>
+                        <th>@date.ToString("dddd, dd MMMM")</th>
                     }
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var timeSlot in ViewBag.TimeSlots)
+                {
+                    <tr>
+                        <td>
+                            @timeSlot.ClassNumber
+                            <br/>
+                            @timeSlot.StartTime - @timeSlot.EndTime
+                        </td>
+                        @foreach (var date in ViewBag.CurrentDates)
+                        {
+                            var schedule = Model.FirstOrDefault(s =>
+                                s.TimeSlot.Id == timeSlot.Id &&
+                                s.DayOfWeek == date.DayOfWeek);
+                            <td
+                            @if(date.DayOfWeek.Equals(today))
+                            {
+                                <text> class="active-day"</text>   
+                            }
+                            >
+                                @if (schedule != null)
+                                {
+                                    <a asp-controller="Attendance" asp-action="Index" 
+                                        asp-route-scheduleDateId="@schedule.ScheduleDateId">
+                                                    <div class="schedule-slot">
+                                            @(schedule != null ? $"{schedule.ClassName} ({schedule.TeacherName})" : "")
+                                        </div>
+                                    </a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -2,34 +2,28 @@
 
 namespace CampusFlow.Models
 {
-    public enum ClassType
-    {
-        Lecture = 1,
-        Practise,
-        LaboratoryWork
-    }
-
     public enum WeekType
     {
         Odd,
         Even
     }
-
-    public class StudentSchedule
+    public class Schedule
     {
+        [Key]
         public int Id { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
-        public ClassType ClassType { get; set; }
-        public WeekType WeekType { get; set; }
-        public string? Location { get; set; }
-        public int TeacherId { get; set; }
-        public int SubjectId { get; set; }
-        public int GroupId { get; set; }
+        public int ClassId { get; set; }
         public int TimeSlotId { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
+        public WeekType WeekType { get; set; }
 
-        public Teacher Teacher { get; set; }
-        public Group Group { get; set; }
-        public Subject Subject { get; set; }
-        public TimeSlot TimeSlot { get; set; }
+        public int? SemesterId { get; set; }
+        public int GroupId { get; set; }
+
+        public virtual Class Class { get; set; }
+        public virtual TimeSlot TimeSlot { get; set; }
+        public virtual Semester? Semester { get; set; }
+        public virtual Group Group { get; set; }
+        public virtual ICollection<ScheduleDate> ScheduleDates { get; set; }
+
     }
 }

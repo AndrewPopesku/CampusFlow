@@ -58,3 +58,16 @@ img:first-child {
 .filter {
     margin: 10px 0;
 }
+
+.left-align {
+    margin-left: auto;
+}
+
+.active-day {
+    background-color: #c2dcff !important;
+}
+
+.schedule-slot {
+    width: fit-content;
+    height: fit-content;
+}

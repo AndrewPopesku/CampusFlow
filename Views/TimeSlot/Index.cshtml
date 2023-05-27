@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.EndTime)
             </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.TimeSlotId" style="text-decoration: none; margin-right: 15px">
+                    <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none; margin-right: 15px">
                         <img src="img/editing.png" alt="edit" width="20" />
                     </a>
-                    <a asp-action="Delete" asp-route-id="@item.TimeSlotId" style="text-decoration: none;">
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
                         <img src="img/delete.png" alt="delete" width="17" />
                     </a>
                 </td>

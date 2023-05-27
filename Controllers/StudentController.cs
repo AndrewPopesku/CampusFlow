@@ -10,103 +10,101 @@ using CampusFlow.Models;
 
 namespace CampusFlow.Controllers
 {
-    public class SubjectController : Controller
+    public class StudentController : Controller
     {
         private readonly CampusContext _context;
 
-        public SubjectController(CampusContext context)
+        public StudentController(CampusContext context)
         {
             _context = context;
         }
 
-        // GET: Subject
+        // GET: Student
         public async Task<IActionResult> Index()
         {
-              return _context.Subjects != null ? 
-                          View(await _context.Subjects.ToListAsync()) :
-                          Problem("Entity set 'CampusContext.Subjects'  is null.");
+              return _context.Students != null ? 
+                          View(await _context.Students.ToListAsync()) :
+                          Problem("Entity set 'CampusContext.Student'  is null.");
         }
 
-        // GET: Subject/Details/5
+        // GET: Student/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Subjects == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var subject = await _context.Subjects
+            var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (subject == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(subject);
+            return View(student);
         }
 
-        // GET: Subject/Create
+        // GET: Student/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Subject/Create
+        // POST: Student/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Subject subject)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Student student)
         {
-            ModelState.Remove("CampusFlows");
             if (ModelState.IsValid)
             {
-                _context.Add(subject);
+                _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(subject);
+            return View(student);
         }
 
-        // GET: Subject/Edit/5
+        // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Subjects == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var subject = await _context.Subjects.FindAsync(id);
-            if (subject == null)
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-            return View(subject);
+            return View(student);
         }
 
-        // POST: Subject/Edit/5
+        // POST: Student/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Subject subject)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] Student student)
         {
-            if (id != subject.Id)
+            if (id != student.Id)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("CampusFlows");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(subject);
+                    _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SubjectExists(subject.Id))
+                    if (!StudentExists(student.Id))
                     {
                         return NotFound();
                     }
@@ -117,49 +115,49 @@ namespace CampusFlow.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(subject);
+            return View(student);
         }
 
-        // GET: Subject/Delete/5
+        // GET: Student/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Subjects == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var subject = await _context.Subjects
+            var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (subject == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(subject);
+            return View(student);
         }
 
-        // POST: Subject/Delete/5
+        // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Subjects == null)
+            if (_context.Students == null)
             {
-                return Problem("Entity set 'CampusContext.Subjects'  is null.");
+                return Problem("Entity set 'CampusContext.Student'  is null.");
             }
-            var subject = await _context.Subjects.FindAsync(id);
-            if (subject != null)
+            var student = await _context.Students.FindAsync(id);
+            if (student != null)
             {
-                _context.Subjects.Remove(subject);
+                _context.Students.Remove(student);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SubjectExists(int id)
+        private bool StudentExists(int id)
         {
-          return (_context.Subjects?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Students?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace CampusFlow.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CampusFlow.Models.Group", b =>
+            modelBuilder.Entity("CampusFlow.Models.Attendance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,20 +30,25 @@ namespace CampusFlow.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GroupNumber")
-                        .HasMaxLength(50)
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ScheduleDateId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Subgroup")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Groups");
+                    b.HasIndex("ScheduleDateId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Attendances");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.StudentSchedule", b =>
+            modelBuilder.Entity("CampusFlow.Models.Class", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,19 +59,72 @@ namespace CampusFlow.Migrations
                     b.Property<int>("ClassType")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("SemesterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SemesterId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GroupNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Subgroup")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeacherId")
+                    b.Property<int?>("SemesterId")
                         .HasColumnType("int");
 
                     b.Property<int>("TimeSlotId")
@@ -77,18 +135,18 @@ namespace CampusFlow.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClassId");
+
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("SubjectId");
-
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("SemesterId");
 
                     b.HasIndex("TimeSlotId");
 
                     b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.Subject", b =>
+            modelBuilder.Entity("CampusFlow.Models.ScheduleDate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,13 +154,66 @@ namespace CampusFlow.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("ScheduleDate");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Semester", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SemesterType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Semesters");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Teacher", b =>
@@ -135,11 +246,11 @@ namespace CampusFlow.Migrations
 
             modelBuilder.Entity("CampusFlow.Models.TimeSlot", b =>
                 {
-                    b.Property<int>("TimeSlotId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimeSlotId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClassNumber")
                         .HasColumnType("int");
@@ -150,24 +261,36 @@ namespace CampusFlow.Migrations
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.HasKey("TimeSlotId");
+                    b.HasKey("Id");
 
                     b.ToTable("TimeSlot");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.StudentSchedule", b =>
+            modelBuilder.Entity("CampusFlow.Models.Attendance", b =>
                 {
-                    b.HasOne("CampusFlow.Models.Group", "Group")
+                    b.HasOne("CampusFlow.Models.ScheduleDate", "ScheduleDate")
                         .WithMany()
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("ScheduleDateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CampusFlow.Models.Subject", "Subject")
-                        .WithMany("Schedules")
-                        .HasForeignKey("SubjectId")
+                    b.HasOne("CampusFlow.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ScheduleDate");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Class", b =>
+                {
+                    b.HasOne("CampusFlow.Models.Semester", "Semester")
+                        .WithMany("Classes")
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("CampusFlow.Models.Teacher", "Teacher")
                         .WithMany()
@@ -175,23 +298,65 @@ namespace CampusFlow.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Semester");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Schedule", b =>
+                {
+                    b.HasOne("CampusFlow.Models.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CampusFlow.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CampusFlow.Models.Semester", "Semester")
+                        .WithMany("Schedules")
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("CampusFlow.Models.TimeSlot", "TimeSlot")
                         .WithMany("Schedules")
                         .HasForeignKey("TimeSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Class");
+
                     b.Navigation("Group");
 
-                    b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
+                    b.Navigation("Semester");
 
                     b.Navigation("TimeSlot");
                 });
 
-            modelBuilder.Entity("CampusFlow.Models.Subject", b =>
+            modelBuilder.Entity("CampusFlow.Models.ScheduleDate", b =>
                 {
+                    b.HasOne("CampusFlow.Models.Schedule", "Schedule")
+                        .WithMany("ScheduleDates")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Schedule", b =>
+                {
+                    b.Navigation("ScheduleDates");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Semester", b =>
+                {
+                    b.Navigation("Classes");
+
                     b.Navigation("Schedules");
                 });
 
