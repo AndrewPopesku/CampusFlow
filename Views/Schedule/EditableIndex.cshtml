@@ -1,0 +1,93 @@
+﻿@using CampusFlow.Extensions;
+@model List<EditableScheduleViewModel>
+
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <a asp-action="Index">Back to current week schedule</a>
+    <a asp-action="Create">Create New</a>
+
+    <form asp-action="EditableIndex" class="col-md-4" method="get">
+        <div class="form-group mt-4">
+            <label for="groupFilter">Filter:</label>
+            <select class="form-control" name="groupSelected" asp-items="@ViewBag.Groups">
+            </select>
+            <select class="form-control" name="weekTypeSelected">
+                <option value="Odd" selected="@((WeekType)ViewBag.SelectedWeekType == WeekType.Odd)">Odd</option>
+                <option value="Even" selected="@((WeekType)ViewBag.SelectedWeekType == WeekType.Even)">Even</option>
+            </select>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+
+    <div class="table-responsize">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    @foreach (var day in ViewBag.Days)
+                    {
+                        <th>
+                            @day
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    int day = 1;
+                    <tr>
+                        <td>
+                            <center>
+                                <h4>@item.TimeSlot.ClassNumber</h4>
+                                @item.TimeSlot.StartTime.ToString(@"hh\:mm") - @item.TimeSlot.EndTime.ToString(@"hh\:mm")
+                            </center>
+                        </td>
+                        @foreach (var schedule in item.Schedules)
+                        {
+                            @while ((int)schedule.DayOfWeek != day % 7)
+                            {
+                                day++;
+                                <td>
+                                </td>
+                            }
+                            <td>
+                                <div class="schedule-slot">
+                                    <div class="schedule-text">
+                                        @schedule.Class.Name
+                                        <br />
+                                        <i>@schedule.Class.ClassType</i>
+                                        <br />
+                                        @schedule.Class.Teacher
+                                        <br />
+                                        @schedule.Class.Location
+                                    </div>
+                                    <div class="buttons">
+                                        <a asp-action="Edit" asp-route-id="@schedule.Id">
+                                            <img src="img/editing.png" alt="edit" width="20" />
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@schedule.Id">
+                                            <img src="img/delete.png" alt="delete" width="20" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            day++;
+                        }
+                        @while (day != 8)
+                        {
+                            day++;
+                            <td>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

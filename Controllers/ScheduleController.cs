@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CampusFlow.Data;
 using CampusFlow.Models;
 using CampusFlow.ViewModels;
 using CampusFlow.Extensions;
+using System.Globalization;
 
 namespace CampusFlow.Controllers
 {
@@ -20,18 +18,35 @@ namespace CampusFlow.Controllers
             _context = context;
         }
 
-
         // GET: Schedule
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? groupSelected, DateTime startDate, 
+            bool backward, bool forward, WeekType weekTypeSelected = 0)
         {
-            var startDate = DateTime.Today.DateByWeekDay(DayOfWeek.Monday);
+            if (startDate == default(DateTime))
+            {
+                startDate = DateTime.Today.DateByWeekDay(DayOfWeek.Monday);
+            }
+
+            if (backward)
+            {
+                startDate = startDate.AddDays(-7);
+            }
+            else if(forward)
+            {
+                startDate = startDate.AddDays(7);
+            }
+
             var endDate = startDate.AddDays(6);
 
             ViewData["CurrentDates"] = Enumerable.Range(0, (endDate - startDate).Days + 1)
                                                  .Select(d => startDate.AddDays(d))
                                                  .ToList();
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
+            ViewData["SelectedWeekType"] = weekTypeSelected;
+            ViewData["StartDate"] = startDate;
 
             var currentWeekSchedule = await _context.Schedules
+                .Where(s => s.Group.Id == (groupSelected ?? 8) && s.WeekType == weekTypeSelected)
                 .Include(s => s.ScheduleDates.Where(sd => sd.Date >= startDate && sd.Date <= endDate))
                 .Include(s => s.TimeSlot)
                 .Include(s => s.Class)
@@ -70,27 +85,29 @@ namespace CampusFlow.Controllers
             return View(currentWeekScheduleViewModel);
         }
 
-        // GET: Schedule/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> EditableIndex(int? groupSelected, WeekType weekTypeSelected)
         {
-            if (id == null || _context.Schedules == null)
-            {
-                return NotFound();
-            }
+            ViewData["Days"] = EditableScheduleViewModel.Days;
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name", groupSelected);
+            ViewData["SelectedWeekType"] = weekTypeSelected;
 
-            var schedule = await _context.Schedules
-                .Include(s => s.Class)
-                .Include(s => s.Group)
-                .Include(s => s.Semester)
+            var schedules = _context.Schedules
+                .Where(s => s.Group.Id == (groupSelected ?? 8) && s.WeekType == weekTypeSelected)
                 .Include(s => s.TimeSlot)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (schedule == null)
-            {
-                return NotFound();
-            }
+                .Include(s => s.Class)
+                .OrderBy(s => s.DayOfWeek);
+            
+            var timeslots = await _context.TimeSlot.ToListAsync();
+            var viewModelList = new List<EditableScheduleViewModel>();
 
-            return View(schedule);
+            foreach (var item in timeslots)
+            {
+                viewModelList.Add(new EditableScheduleViewModel(await schedules.Where(s => s.TimeSlotId == item.Id).ToListAsync(),
+                    item));
+            }
+            return View(viewModelList);
         }
+
 
         // GET: Schedule/Create
         public IActionResult Create()
@@ -226,20 +243,20 @@ namespace CampusFlow.Controllers
             ModelState.Remove("Group");
             ModelState.Remove("Semester");
             ModelState.Remove("TimeSlot");
-            ModelState.Remove("Attendances");
+            ModelState.Remove("ScheduleDates");
 
             if (schedule == null)
             {
-                ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Location");
-                ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Id");
-                ViewData["SemesterId"] = new SelectList(_context.Semesters, "Id", "Id");
-                ViewData["TimeSlotId"] = new SelectList(_context.TimeSlot, "Id", "Id");
+                ViewData["Class"] = new SelectList(_context.Classes, "Id", "Name");
+                ViewData["Group"] = new SelectList(_context.Groups, "Id", "Name");
+                ViewData["Semester"] = new SelectList(_context.Semesters, "Id", "Name");
+                ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "Id", "Id");
                 return;
             }
 
-            ViewData["Class"] = new SelectList(_context.Classes, "Id", "Location", schedule.ClassId);
-            ViewData["Groud"] = new SelectList(_context.Groups, "Id", "Id", schedule.GroupId);
-            ViewData["Semester"] = new SelectList(_context.Semesters, "Id", "Id", schedule.SemesterId);
+            ViewData["Class"] = new SelectList(_context.Classes, "Id", "Name", schedule.ClassId);
+            ViewData["Groud"] = new SelectList(_context.Groups, "Id", "Name", schedule.GroupId);
+            ViewData["Semester"] = new SelectList(_context.Semesters, "Id", "Name", schedule.SemesterId);
             ViewData["TimeSlot"] = new SelectList(_context.TimeSlot, "Id", "Id", schedule.TimeSlotId);
         }
     }

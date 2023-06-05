@@ -3,17 +3,31 @@
 
 @{
     ViewData["Title"] = "Current Week Schedule";
-    var today = DateTime.Today.DayOfWeek;
+    var today = DateTime.Today;
 }
 
 <div class="container mt-4">
     <h2>@ViewData["Title"]</h2>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="EditableIndex">Edit schedule</a>
+
+    <form asp-action="Index" class="col-md-4" method="get">
+        <div class="form-group mt-4">
+            <label for="groupFilter">Filter:</label>
+            <select class="form-control" name="groupSelected" asp-items="@ViewBag.Groups">
+            </select>
+            <select class="form-control" name="weekTypeSelected">
+                <option value="Odd" selected="@((WeekType)ViewBag.SelectedWeekType == WeekType.Odd)">Odd</option>
+                <option value="Even" selected="@((WeekType)ViewBag.SelectedWeekType == WeekType.Even)">Even</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>
-                    <th>Time Slot</th>
+                    <th></th>
                     @foreach(var date in ViewBag.CurrentDates)
                     {
                         <th>@date.ToString("dddd, dd MMMM")</th>
@@ -25,9 +39,10 @@
                 {
                     <tr>
                         <td>
-                            @timeSlot.ClassNumber
-                            <br/>
-                            @timeSlot.StartTime - @timeSlot.EndTime
+                            <center>
+                                <h4>@timeSlot.ClassNumber</h4>
+                                @timeSlot.StartTime.ToString(@"hh\:mm") - @timeSlot.EndTime.ToString(@"hh\:mm")
+                            </center>
                         </td>
                         @foreach (var date in ViewBag.CurrentDates)
                         {
@@ -35,7 +50,7 @@
                                 s.TimeSlot.Id == timeSlot.Id &&
                                 s.DayOfWeek == date.DayOfWeek);
                             <td
-                            @if(date.DayOfWeek.Equals(today))
+                            @if(date.Equals(today))
                             {
                                 <text> class="active-day"</text>   
                             }
@@ -56,4 +71,11 @@
             </tbody>
         </table>
     </div>
+
+    <form method="post" action="/">
+        <input type="hidden" name="startDate" value="@ViewBag.StartDate"/>
+        <input type="submit" name="backward" value="true"/>
+        <input type="submit" name="forward" value="true" />
+    </form>
+
 </div>

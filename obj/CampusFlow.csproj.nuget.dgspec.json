@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programming\\study\\ASP.NET MVC tutorials\\CampusFlow\\CampusFlow.csproj": {}
+    "D:\\Programming\\work\\CF\\CampusFlow.csproj": {}
   },
   "projects": {
-    "D:\\Programming\\study\\ASP.NET MVC tutorials\\CampusFlow\\CampusFlow.csproj": {
+    "D:\\Programming\\work\\CF\\CampusFlow.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\study\\ASP.NET MVC tutorials\\CampusFlow\\CampusFlow.csproj",
+        "projectUniqueName": "D:\\Programming\\work\\CF\\CampusFlow.csproj",
         "projectName": "CampusFlow",
-        "projectPath": "D:\\Programming\\study\\ASP.NET MVC tutorials\\CampusFlow\\CampusFlow.csproj",
+        "projectPath": "D:\\Programming\\work\\CF\\CampusFlow.csproj",
         "packagesPath": "C:\\Users\\popes\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\study\\ASP.NET MVC tutorials\\CampusFlow\\obj\\",
+        "outputPath": "D:\\Programming\\work\\CF\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\popes\\AppData\\Roaming\\NuGet\\NuGet.Config",

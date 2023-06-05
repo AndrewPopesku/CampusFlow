@@ -9,185 +9,189 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CampusFlow
 build_property.RootNamespace = CampusFlow
-build_property.ProjectDir = D:\Programming\study\ASP.NET MVC tutorials\CampusFlow\
+build_property.ProjectDir = D:\Programming\work\CF\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Programming\study\ASP.NET MVC tutorials\CampusFlow
+build_property.MSBuildProjectDirectory = D:\Programming\work\CF
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Attendance/Create.cshtml]
+[D:/Programming/work/CF/Views/Attendance/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0ZW5kYW5jZVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Attendance/Delete.cshtml]
+[D:/Programming/work/CF/Views/Attendance/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0ZW5kYW5jZVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Attendance/Details.cshtml]
+[D:/Programming/work/CF/Views/Attendance/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0ZW5kYW5jZVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Attendance/Edit.cshtml]
+[D:/Programming/work/CF/Views/Attendance/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0ZW5kYW5jZVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Attendance/Index.cshtml]
+[D:/Programming/work/CF/Views/Attendance/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0ZW5kYW5jZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Class/Create.cshtml]
+[D:/Programming/work/CF/Views/Class/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Class/Delete.cshtml]
+[D:/Programming/work/CF/Views/Class/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Class/Details.cshtml]
+[D:/Programming/work/CF/Views/Class/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Class/Edit.cshtml]
+[D:/Programming/work/CF/Views/Class/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Class/Index.cshtml]
+[D:/Programming/work/CF/Views/Class/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Group/Create.cshtml]
+[D:/Programming/work/CF/Views/Group/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Group/Delete.cshtml]
+[D:/Programming/work/CF/Views/Group/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Group/Details.cshtml]
+[D:/Programming/work/CF/Views/Group/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Group/Edit.cshtml]
+[D:/Programming/work/CF/Views/Group/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Group/Index.cshtml]
+[D:/Programming/work/CF/Views/Group/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Schedule/Create.cshtml]
+[D:/Programming/work/CF/Views/Schedule/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZWR1bGVcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Schedule/Delete.cshtml]
+[D:/Programming/work/CF/Views/Schedule/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZWR1bGVcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Schedule/Details.cshtml]
+[D:/Programming/work/CF/Views/Schedule/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZWR1bGVcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Schedule/Edit.cshtml]
+[D:/Programming/work/CF/Views/Schedule/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZWR1bGVcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Schedule/Index.cshtml]
+[D:/Programming/work/CF/Views/Schedule/EditableIndex.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZWR1bGVcRWRpdGFibGVJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programming/work/CF/Views/Schedule/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZWR1bGVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/Programming/work/CF/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Student/Create.cshtml]
+[D:/Programming/work/CF/Views/Student/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Student/Delete.cshtml]
+[D:/Programming/work/CF/Views/Student/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Student/Details.cshtml]
+[D:/Programming/work/CF/Views/Student/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Student/Edit.cshtml]
+[D:/Programming/work/CF/Views/Student/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Student/Index.cshtml]
+[D:/Programming/work/CF/Views/Student/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Subject/Create.cshtml]
+[D:/Programming/work/CF/Views/Subject/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Subject/Delete.cshtml]
+[D:/Programming/work/CF/Views/Subject/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Subject/Details.cshtml]
+[D:/Programming/work/CF/Views/Subject/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Subject/Edit.cshtml]
+[D:/Programming/work/CF/Views/Subject/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Subject/Index.cshtml]
+[D:/Programming/work/CF/Views/Subject/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Teacher/Create.cshtml]
+[D:/Programming/work/CF/Views/Teacher/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Teacher/Delete.cshtml]
+[D:/Programming/work/CF/Views/Teacher/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Teacher/Details.cshtml]
+[D:/Programming/work/CF/Views/Teacher/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Teacher/Edit.cshtml]
+[D:/Programming/work/CF/Views/Teacher/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Teacher/Index.cshtml]
+[D:/Programming/work/CF/Views/Teacher/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/TimeSlot/Create.cshtml]
+[D:/Programming/work/CF/Views/TimeSlot/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGltZVNsb3RcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/TimeSlot/Delete.cshtml]
+[D:/Programming/work/CF/Views/TimeSlot/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGltZVNsb3RcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/TimeSlot/Details.cshtml]
+[D:/Programming/work/CF/Views/TimeSlot/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGltZVNsb3RcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/TimeSlot/Edit.cshtml]
+[D:/Programming/work/CF/Views/TimeSlot/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGltZVNsb3RcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/TimeSlot/Index.cshtml]
+[D:/Programming/work/CF/Views/TimeSlot/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGltZVNsb3RcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/_ViewImports.cshtml]
+[D:/Programming/work/CF/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/_ViewStart.cshtml]
+[D:/Programming/work/CF/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Programming/study/ASP.NET MVC tutorials/CampusFlow/Views/Shared/_Layout.cshtml]
+[D:/Programming/work/CF/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-8fyyxml6fi
