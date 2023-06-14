@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>@ViewBag.Date.ToString("ddd, dd.MM.yyyy")</h1>
+<h1>@ViewBag.Group.Name | @ViewBag.ScheduleInfo.Date.ToString("ddd, dd.MM.yyyy") | @ViewBag.ScheduleInfo.Schedule.Class.Name</h1>
 
 <form asp-action="UpdateAll" method="post">
-    <button type="submit">Update selected records</button>
+    <button type="submit" class="btn btn-primary">Update selected records</button>
     <input type="hidden" name="scheduleDateId" value="@Model.Select(model => model.ScheduleDateId).First()"/>
+    <input type="hidden" name="groupId" value="@ViewBag.Group.Id" />
     <table class="table">
         <thead>
             <tr>

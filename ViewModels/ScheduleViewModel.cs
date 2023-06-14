@@ -7,8 +7,10 @@ namespace CampusFlow.ViewModels
         public string ClassName { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         public TimeSlot TimeSlot { get; set; }
+        public int GroupId { get; set; }
         public string TeacherName { get; set; }
         public string ClassType { get; set; }
+        public string Location { get; set; }
         public int ScheduleDateId { get; set; }
     }
 }

@@ -11,16 +11,17 @@
     <a asp-action="EditableIndex">Edit schedule</a>
 
     <form asp-action="Index" class="col-md-4" method="get">
-        <div class="form-group mt-4">
-            <label for="groupFilter">Filter:</label>
+        <div class="form-group mt-4 d-flex">
+            <label for="groupFilter">Group:</label>
             <select class="form-control" name="groupSelected" asp-items="@ViewBag.Groups">
             </select>
+            <label>Week Type:</label>
             <select class="form-control" name="weekTypeSelected">
                 <option value="Odd" selected="@((WeekType)ViewBag.SelectedWeekType == WeekType.Odd)">Odd</option>
                 <option value="Even" selected="@((WeekType)ViewBag.SelectedWeekType == WeekType.Even)">Even</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Apply Filter</button>
+        <button type="submit" class="btn btn-primary filter-btn">Apply Filter</button>
     </form>
 
     <div class="table-responsive">
@@ -57,10 +58,15 @@
                             >
                                 @if (schedule != null)
                                 {
-                                    <a asp-controller="Attendance" asp-action="Index" 
-                                        asp-route-scheduleDateId="@schedule.ScheduleDateId">
-                                                    <div class="schedule-slot">
-                                            @(schedule != null ? $"{schedule.ClassName} ({schedule.TeacherName})" : "")
+                                    <a asp-controller="Attendance" asp-action="Index"
+                                        asp-route-scheduleDateId="@schedule.ScheduleDateId" asp-route-groupId="@schedule.GroupId">
+                                        <div class="schedule-slot">
+                                            @if (schedule != null)
+                                            {
+                                                <p>@schedule.ClassName</p>
+                                                <p>@schedule.TeacherName</p>
+                                                <p>@schedule.Location</p>
+                                            }
                                         </div>
                                     </a>
                                 }
@@ -74,8 +80,8 @@
 
     <form method="post" action="/">
         <input type="hidden" name="startDate" value="@ViewBag.StartDate"/>
-        <input type="submit" name="backward" value="true"/>
-        <input type="submit" name="forward" value="true" />
+        <input class="btn btn-secondary" type="submit" name="weekMove" value="Backward" />
+        <input class="btn btn-secondary" type="submit" name="weekMove" value="Forward" />
     </form>
 
 </div>

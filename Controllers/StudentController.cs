@@ -48,6 +48,7 @@ namespace CampusFlow.Controllers
         // GET: Student/Create
         public IActionResult Create()
         {
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View();
         }
 
@@ -56,14 +57,17 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,GroupId")] Student student)
         {
+            ModelState.Remove("Group");
             if (ModelState.IsValid)
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(student);
         }
 
@@ -88,7 +92,7 @@ namespace CampusFlow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,GroupId")] Student student)
         {
             if (id != student.Id)
             {

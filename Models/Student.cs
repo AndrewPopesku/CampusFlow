@@ -12,10 +12,13 @@ namespace CampusFlow.Models
         [Required]
         [StringLength(50)]
         public string LastName { get; set; }
+        public int GroupId { get; set; }
 
         public string FullName
         {
             get => FirstName + " " + LastName;
         }
+
+        public virtual Group Group { get; set; }
     }
 }

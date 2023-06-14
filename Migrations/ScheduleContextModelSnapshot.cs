@@ -164,7 +164,7 @@ namespace CampusFlow.Migrations
 
                     b.HasIndex("ScheduleId");
 
-                    b.ToTable("ScheduleDate");
+                    b.ToTable("ScheduleDate", (string)null);
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Semester", b =>
@@ -206,12 +206,17 @@ namespace CampusFlow.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Students");
                 });
@@ -346,6 +351,17 @@ namespace CampusFlow.Migrations
                         .IsRequired();
 
                     b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("CampusFlow.Models.Student", b =>
+                {
+                    b.HasOne("CampusFlow.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("CampusFlow.Models.Schedule", b =>

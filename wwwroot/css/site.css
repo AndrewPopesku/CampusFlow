@@ -17,11 +17,6 @@ body {
   margin-bottom: 60px;
 }
 
-.schedule-slot {
-    display: flex;
-    justify-content: space-between;
-}
-
 .buttons:first-child {
     margin-bottom: 20px;
 }
@@ -31,8 +26,11 @@ img:first-child {
 }
 
 .buttons a {
-    text-decoration: none;
     display: block;
+}
+
+a {
+    text-decoration: none;
 }
 
 .controls {
@@ -53,6 +51,7 @@ img:first-child {
 
 .filter-btn {
     height: 40px;
+    margin: 10px 0;
 }
 
 .filter {
@@ -70,4 +69,17 @@ img:first-child {
 .schedule-slot {
     width: fit-content;
     height: fit-content;
+}
+
+.form-control {
+    margin-right: 50px;
+}
+
+.form-group {
+    align-items: center;
+}
+
+label {
+    white-space: nowrap;
+    margin-right: 10px;
 }

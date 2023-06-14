@@ -20,11 +20,13 @@ namespace CampusFlow.Controllers
         }
 
         // GET: Attendances
-        public async Task<IActionResult> Index(int scheduleDateId)
+        public async Task<IActionResult> Index(int scheduleDateId, int groupId)
         {
             if (!await _context.Attendances.AnyAsync(a => a.ScheduleDateId == scheduleDateId))
             {
-                var students = await _context.Students.ToListAsync();
+                var students = await _context.Students
+                    .Where(s => s.GroupId == groupId)
+                    .ToListAsync();
                 var newAttends = new List<Attendance>();
                 foreach (var student in students)
                 {
@@ -45,16 +47,19 @@ namespace CampusFlow.Controllers
                 .Include(a => a.Student)
                 .ToListAsync();
 
-            ViewData["Date"] = await _context.ScheduleDates
+            ViewData["ScheduleInfo"] = await _context.ScheduleDates
                 .Where(sd => sd.Id == scheduleDateId)
-                .Select(sd => sd.Date)
+                .Include(sd => sd.Schedule)
+                    .ThenInclude(s => s.Class)
                 .SingleOrDefaultAsync();
+
+            ViewData["Group"] = await _context.Groups.SingleOrDefaultAsync(g => g.Id == groupId);
 
             return View(attends);
         }
 
 
-        public async Task<IActionResult> UpdateAll(int scheduleDateId, Dictionary<int, bool> attendanceStatuses)
+        public async Task<IActionResult> UpdateAll(int scheduleDateId, int groupId, Dictionary<int, bool> attendanceStatuses)
         {
             if (attendanceStatuses != null)
             {
@@ -69,7 +74,7 @@ namespace CampusFlow.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index", new { scheduleDateId = scheduleDateId });
+            return RedirectToAction("Index", new { scheduleDateId = scheduleDateId, groupId = groupId });
         }
 
         // GET: Attendances/Edit/5

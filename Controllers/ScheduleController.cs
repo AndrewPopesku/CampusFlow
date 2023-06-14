@@ -20,20 +20,16 @@ namespace CampusFlow.Controllers
 
         // GET: Schedule
         public async Task<IActionResult> Index(int? groupSelected, DateTime startDate, 
-            bool backward, bool forward, WeekType weekTypeSelected = 0)
+            string weekMove, WeekType weekTypeSelected = 0)
         {
             if (startDate == default(DateTime))
             {
                 startDate = DateTime.Today.DateByWeekDay(DayOfWeek.Monday);
             }
 
-            if (backward)
+            if (!string.IsNullOrEmpty(weekMove))
             {
-                startDate = startDate.AddDays(-7);
-            }
-            else if(forward)
-            {
-                startDate = startDate.AddDays(7);
+                startDate = (weekMove.Equals("Forward")) ? startDate.AddDays(7) : startDate.AddDays(-7);
             }
 
             var endDate = startDate.AddDays(6);
@@ -77,8 +73,10 @@ namespace CampusFlow.Controllers
                 ClassName = s.Class.Name,
                 DayOfWeek = s.DayOfWeek,
                 TimeSlot = s.TimeSlot,
+                GroupId = s.GroupId,
                 TeacherName = s.Class.Teacher.FullName,
                 ClassType = s.Class.ClassType.ToString(),
+                Location = s.Class.Location,
                 ScheduleDateId = s.ScheduleDates.Select(sd => sd.Id).SingleOrDefault(),
             }).ToList();
 
